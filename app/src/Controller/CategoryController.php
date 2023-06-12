@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\Type\CategoryType;
 use App\Service\CategoryServiceInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * Class CategoryController.
  */
 #[Route('/category')]
+#[IsGranted('ROLE_ADMIN')]
 class CategoryController extends AbstractController
 {
     /**
@@ -34,12 +36,12 @@ class CategoryController extends AbstractController
     /**
      * Constructor.
      *
-     * @param CategoryServiceInterface $recipeService Recipe service
+     * @param CategoryServiceInterface $categoryService Recipe service
      * @param TranslatorInterface      $translator    Translator
      */
-    public function __construct(CategoryServiceInterface $recipeService, TranslatorInterface $translator)
+    public function __construct(CategoryServiceInterface $categoryService, TranslatorInterface $translator)
     {
-        $this->categoryService = $recipeService;
+        $this->categoryService = $categoryService;
         $this->translator = $translator;
     }
 
