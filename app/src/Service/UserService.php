@@ -23,11 +23,6 @@ class UserService implements UserServiceInterface
     private UserRepository $userRepository;
 
     /**
-     * Recipe repository.
-     */
-    private RecipeRepository $recipeRepository;
-
-    /**
      * Paginator.
      */
     private PaginatorInterface $paginator;
@@ -39,11 +34,10 @@ class UserService implements UserServiceInterface
      * @param PaginatorInterface $paginator       Paginator
      * @param RecipeRepository    $recipeRepository Recipe repository
      */
-    public function __construct(UserRepository $userRepository, PaginatorInterface $paginator, RecipeRepository $recipeRepository)
+    public function __construct(UserRepository $userRepository, PaginatorInterface $paginator)
     {
         $this->userRepository = $userRepository;
         $this->paginator = $paginator;
-        $this->recipeRepository = $recipeRepository;
     }
 
     /**
