@@ -6,7 +6,6 @@
 namespace App\Service;
 
 use App\Entity\User;
-use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
@@ -40,4 +39,6 @@ interface UserServiceInterface
      * @throws NonUniqueResultException
      */
     public function findOneById(int $id): ?User;
+
+    public function delete(User $user): void;
 }

@@ -13,8 +13,31 @@
 </head>
 <body>
 <main role="main" class="container-fluid">
+    <div>
+        <a class="btn btn-outline-primary" href="{{ url('recipe_index') }}">{{ 'title.recipe_list'|trans }}</a>
+    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+        <div>
+            <a class="btn btn-outline-primary" href="{{ url('category_index') }}" class="button">{{ 'title.category_list'|trans }}</a>
+        </div>
+        <div>
+            <a class="btn btn-outline-primary" href="{{ url('tag_index') }}" class="button">{{ 'title.tag_list'|trans }}</a>
+        </div>
+        <div>
+            <a class="btn btn-outline-primary" href="{{ url('user_index') }}" class="button">{{ 'title.user_list'|trans }}</a>
+        </div>
+    {% endif %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <div>{{ app.user.email }}</div>
+        <div>
+            <a class="btn btn-outline-primary" href="{{ url('user_edit', {id: app.user.id}) }}">{{ 'action_edit_password'|trans }}</a>
+        </div>
+        <div>
+            <a class="btn btn-outline-primary" href="{{ url('user_edit_email', {id: app.user.id}) }}">{{ 'action_edit_email'|trans }}</a>
+        </div>
+        <div>
+            <a class="btn btn-outline-primary" href="{{ url('user_delete', {id: app.user.id}) }}">{{ 'action_delete_user'|trans }}</a>
+        </div>
         <div>
             <a class="btn btn-outline-primary" href="{{ url('app_logout') }}">{{ 'action_logout'|trans }}</a>
         </div>

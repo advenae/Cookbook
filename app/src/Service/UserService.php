@@ -8,7 +8,6 @@ namespace App\Service;
 use App\Repository\RecipeRepository;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -78,5 +77,10 @@ class UserService implements UserServiceInterface
     public function findOneById(int $id): ?User
     {
         return $this->userRepository->findOneById($id);
+    }
+
+    public function delete(User $user): void
+    {
+        $this->userRepository->delete($user);
     }
 }
