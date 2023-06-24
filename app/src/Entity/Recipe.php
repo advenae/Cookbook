@@ -104,7 +104,28 @@ class Recipe
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->ingredients = new ArrayCollection();
     }
+
+    /**
+     * Ingredients.
+     *
+     * @var array
+     *
+     * @ORM\ManyToMany(
+     *     targetEntity="App\Entity\Ingredient",
+     *     inversedBy="recipes",
+     *     fetch="EXTRA_LAZY",
+     * )
+     *
+     * @ORM\JoinTable(name="recipes_ingredients")
+     *
+     * @Assert\Type(type="Doctrine\Common\Collections\Collection")
+     */
+    #[Assert\Valid]
+    #[ORM\ManyToMany(targetEntity: Ingredient::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\JoinTable(name: 'recipes_ingredients')]
+    private $ingredients;
 
     /**
      * Getter for Id.
@@ -262,5 +283,37 @@ class Recipe
     public function removeTag(Tag $tag): void
     {
         $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Getter for ingredients.
+     *
+     * @return Collection<int, Ingredient> Ingredients collection
+     */
+    public function getIngredients(): Collection
+    {
+        return $this->ingredients;
+    }
+
+    /**
+     * Add ingredient.
+     *
+     * @param Ingredient $ingredient Ingredient entity
+     */
+    public function addIngredient(Ingredient $ingredient): void
+    {
+        if (!$this->ingredients->contains($ingredient)) {
+            $this->ingredients[] = $ingredient;
+        }
+    }
+
+    /**
+     * Remove ingredient.
+     *
+     * @param Ingredient $ingredient Ingredient entity
+     */
+    public function removeIngredient(Ingredient $ingredient): void
+    {
+        $this->ingredients->removeElement($ingredient);
     }
 }
