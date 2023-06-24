@@ -35,4 +35,11 @@ interface RecipeServiceInterface
      * @param Recipe $recipe Recipe entity
      */
     public function delete(Recipe $recipe): void;
+
+    /**
+     * Get recipe by id.
+     *
+     * @param int $id Recipe id
+     */
+    public function getById(int $id): ?Recipe;
 }

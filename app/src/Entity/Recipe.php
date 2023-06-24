@@ -101,10 +101,19 @@ class Recipe
     #[ORM\JoinTable(name: 'recipes_tags')]
     private $tags;
 
+    /**
+     * Comments.
+     *
+     * @var Comment|null
+     */
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Comment::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    private $comments;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -315,5 +324,50 @@ class Recipe
     public function removeIngredient(Ingredient $ingredient): void
     {
         $this->ingredients->removeElement($ingredient);
+    }
+
+    /**
+     * Getter for comments.
+     *
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * Add comment.
+     *
+     * @param Comment $comment Comment
+     *
+     * @return $this
+     */
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove comment.
+     *
+     * @param Comment $comment Comment
+     *
+     * @return $this
+     */
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            if ($comment->getRecipe() === $this) {
+                $comment->setRecipe(null);
+            }
+        }
+
+        return $this;
     }
 }
