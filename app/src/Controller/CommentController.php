@@ -53,37 +53,6 @@ class CommentController extends AbstractController
     }
 
     /**
-     * Index action.
-     *
-     * @param Request $request HTTP Request
-     *
-     * @return Response HTTP response
-     */
-    #[Route(name: 'comment_index', methods: 'GET')]
-    public function index(Request $request): Response
-    {
-        $pagination = $this->commentService->getPaginatedList(
-            $request->query->getInt('page', 1)
-        );
-
-        return $this->render('comment/index.html.twig', ['pagination' => $pagination]);
-    }
-
-    /**
-     * Show action.
-     *
-     * @param Comment $comment Comment entity
-     *
-     * @return Response HTTP response
-     */
-    #[Route(
-        '/{id}',
-        name: 'comment_show',
-        requirements: ['id' => '[1-9]\d*'],
-        methods: 'GET',
-    )]
-
-    /**
      * Create action.
      *
      * @param Request $request HTTP request
@@ -104,6 +73,10 @@ class CommentController extends AbstractController
         }
 
         $comment = new Comment();
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        $comment->setAuthor($user);
+
         $recipeId = $this->recipeService->getById($request->get('id'))->getId();
         $form = $this->createForm(CommentType::class, $comment, ['action' => $this->generateUrl('comment_create', ['id' => $recipeId])]);
         $form->handleRequest($request);
@@ -153,7 +126,7 @@ class CommentController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('DELETE', subject: 'comment')]
     #[Route('/{id}/delete', name: 'comment_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     public function delete(Request $request, Comment $comment): Response
     {
