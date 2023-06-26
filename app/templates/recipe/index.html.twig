@@ -9,11 +9,12 @@
 
     <div>
         {% if is_granted('ROLE_ADMIN') %}
-        <a class="btn btn-outline-primary" href="{{ url('recipe_create') }}" class="button">
-            {{ 'action.create_recipe'|trans }}
-        </a>
+            <a class="btn btn-outline-primary" href="{{ url('recipe_create') }}" class="button">
+                {{ 'action.create_recipe'|trans }}
+            </a>
         {% endif %}
     </div>
+
 
     {% if pagination is defined and pagination.items|length %}
 
@@ -46,17 +47,15 @@
                         </a>
                     </td>
                     <td>
-                        {% for item in recipe.tags %}
-                            {% if recipe.tags is defined and recipe.tags|length %}
-                                {% for tag in recipe.tags %}
-                                    <a class="btn btn-outline-primary" href="{{ url('recipe_index', {'filters.tag_id' : tag.id}) }}" title="{{ tag.title }}">
-                                        {{ tag.title }}
-                                    </a>
-                                {% endfor %}
-                            {% else %}
-                                &nbsp;
-                            {% endif %}
-                        {% endfor %}
+                        {% if recipe.tags is defined and recipe.tags|length %}
+                            {% for tag in recipe.tags %}
+                                <a class="btn btn-outline-primary" href="{{ url('recipe_index', {'filters.tag_id' : tag.id}) }}" title="{{ tag.title }}">
+                                    {{ tag.title }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
                     </td>
                     <td>
                         <a class="btn btn-outline-primary" href="{{ url('recipe_show', {id: recipe.id}) }}" title="{{ 'action.show'|trans }}">

@@ -46,14 +46,14 @@ class RecipeFixtures extends AbstractBaseFixtures implements DependentFixtureInt
             $recipe->setContent($this->faker->paragraph(15));
             $tags = $this->getRandomReferences(
                 'tags',
-                $this->faker->numberBetween(0, 5)
+                $this->faker->numberBetween(0, 10)
             );
             foreach ($tags as $item) {
                 $recipe->addTag($item);
             }
             $ingredients = $this->getRandomReferences(
                 'ingredients',
-                $this->faker->numberBetween(1, 20)
+                $this->faker->numberBetween(2, 15)
             );
             foreach ($ingredients as $item) {
                 $recipe->addIngredient($item);
