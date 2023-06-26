@@ -33,6 +33,9 @@
                     {% endif %}
                     <td>{{ comment.content }}</td>
                     <td>
+                        <a class="btn btn-outline-primary" href="{{ url('recipe_show', {id: comment.recipe.id}) }}" title="{{ 'action.show_recipe'|trans }}">
+                            {{ 'action.show_recipe'|trans }}
+                        </a>
                         {% if is_granted('DELETE', comment) %}
                             <a class="btn btn-outline-danger" href="{{ url('comment_delete', {id: comment.id}) }}" title="{{ 'action.delete'|trans }}">
                                 {{ 'action.delete'|trans }}
