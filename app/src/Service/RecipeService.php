@@ -39,10 +39,10 @@ class RecipeService implements RecipeServiceInterface
     /**
      * Constructor.
      *
-     * @param CategoryServiceInterface $categoryService Category service
-     * @param PaginatorInterface       $paginator       Paginator
-     * @param TagServiceInterface      $tagService      Tag service
-     * @param RecipeRepository           $recipeRepository  Recipe repository
+     * @param CategoryServiceInterface $categoryService  Category service
+     * @param PaginatorInterface       $paginator        Paginator
+     * @param TagServiceInterface      $tagService       Tag service
+     * @param RecipeRepository         $recipeRepository Recipe repository
      */
     public function __construct(
         CategoryServiceInterface $categoryService,
@@ -59,7 +59,7 @@ class RecipeService implements RecipeServiceInterface
     /**
      * Get paginated list.
      *
-     * @param int $page Page number
+     * @param int                $page    Page number
      * @param array<string, int> $filters Filters array
      *
      * @return PaginationInterface<SlidingPagination> Paginated list

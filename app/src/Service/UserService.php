@@ -5,7 +5,6 @@
 
 namespace App\Service;
 
-use App\Repository\RecipeRepository;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -29,9 +28,8 @@ class UserService implements UserServiceInterface
     /**
      * Constructor.
      *
-     * @param UserRepository     $userRepository  User repository
-     * @param PaginatorInterface $paginator       Paginator
-     * @param RecipeRepository    $recipeRepository Recipe repository
+     * @param UserRepository     $userRepository User repository
+     * @param PaginatorInterface $paginator      Paginator
      */
     public function __construct(UserRepository $userRepository, PaginatorInterface $paginator)
     {

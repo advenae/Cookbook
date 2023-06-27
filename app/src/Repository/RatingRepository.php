@@ -1,23 +1,23 @@
 <?php
 /**
- * Comment repository.
+ * Rating repository.
  */
 
 namespace App\Repository;
 
-use App\Entity\Comment;
+use App\Entity\Rating;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
- * @method Comment|null findOneBy(array $criteria, array $orderBy = null)
- * @method Comment[]    findAll()
- * @method Comment[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Rating|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Rating|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Rating[]    findAll()
+ * @method Rating[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CommentRepository extends ServiceEntityRepository
+class RatingRepository extends ServiceEntityRepository
 {
     /**
      * Items per page.
@@ -33,7 +33,7 @@ class CommentRepository extends ServiceEntityRepository
      */
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Comment::class);
+        parent::__construct($registry, Rating::class);
     }
 
     /**
@@ -44,29 +44,29 @@ class CommentRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->select('comment', 'partial recipe.{id}')
-            ->join('comment.recipe', 'recipe');
+            ->select('rating', 'partial recipe.{id}')
+            ->join('rating.recipe', 'recipe');
     }
 
     /**
      * Save entity.
      *
-     * @param Comment $comment Comment entity
+     * @param Rating $rating Rating entity
      */
-    public function save(Comment $comment): void
+    public function save(Rating $rating): void
     {
-        $this->_em->persist($comment);
+        $this->_em->persist($rating);
         $this->_em->flush();
     }
 
     /**
      * Delete entity.
      *
-     * @param Comment $comment Comment entity
+     * @param Rating $rating Rating entity
      */
-    public function delete(Comment $comment): void
+    public function delete(Rating $rating): void
     {
-        $this->_em->remove($comment);
+        $this->_em->remove($rating);
         $this->_em->flush();
     }
 
@@ -79,11 +79,11 @@ class CommentRepository extends ServiceEntityRepository
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('comment');
+        return $queryBuilder ?? $this->createQueryBuilder('rating');
     }
 
     /**
-     * Query comments by author.
+     * Query ratings by author.
      *
      * @param User $user User entity
      *
@@ -93,7 +93,7 @@ class CommentRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->queryAll();
 
-        $queryBuilder->andWhere('comment.author = :author')
+        $queryBuilder->andWhere('rating.author = :author')
             ->setParameter('author', $user);
 
         return $queryBuilder;

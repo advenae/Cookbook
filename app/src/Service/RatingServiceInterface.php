@@ -1,18 +1,18 @@
 <?php
 /**
- * Comment service interface.
+ * Rating service interface.
  */
 
 namespace App\Service;
 
-use App\Entity\Comment;
+use App\Entity\Rating;
 use App\Entity\User;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
- * Class CommentServiceInterface.
+ * Class RatingServiceInterface.
  */
-interface CommentServiceInterface
+interface RatingServiceInterface
 {
     /**
      * Get paginated list.
@@ -26,14 +26,14 @@ interface CommentServiceInterface
     /**
      * Save entity.
      *
-     * @param Comment $comment Comment entity
+     * @param Rating $rating Rating entity
      */
-    public function save(Comment $comment): void;
+    public function save(Rating $rating): void;
 
     /**
      * Delete entity.
      *
-     * @param Comment $comment Comment entity
+     * @param Rating $rating Rating entity
      */
-    public function delete(Comment $comment): void;
+    public function delete(Rating $rating): void;
 }

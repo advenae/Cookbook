@@ -66,6 +66,14 @@
                 <source>label.user_email</source>
                 <target>Email</target>
             </trans-unit>
+            <trans-unit id="label.value">
+                <source>label.value</source>
+                <target>Wartość</target>
+            </trans-unit>
+            <trans-unit id="label.none">
+                <source>label.none</source>
+                <target>brak</target>
+            </trans-unit>
 
             <trans-unit id="message.empty_list">
                 <source>message.empty_list</source>

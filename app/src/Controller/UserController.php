@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CommentRepository;
 
 /**
@@ -46,10 +45,10 @@ class UserController extends AbstractController
     /**
      * Constructor.
      *
-     * @param UserServiceInterface        $userService    User service
-     * @param TranslatorInterface         $translator     Translator
-     * @param UserPasswordHasherInterface $passwordHasher Password hasher
-     * @param CommentRepository    $commentRepository Comment Repository
+     * @param UserServiceInterface        $userService       User service
+     * @param TranslatorInterface         $translator        Translator
+     * @param UserPasswordHasherInterface $passwordHasher    Password hasher
+     * @param CommentRepository           $commentRepository Comment Repository
      */
     public function __construct(UserServiceInterface $userService, TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher, CommentRepository $commentRepository)
     {
@@ -144,7 +143,7 @@ class UserController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param User                          $user    User entity
+     * @param User    $user    User entity
      *
      * @return Response HTTP response
      *
@@ -163,12 +162,12 @@ class UserController extends AbstractController
     public function delete(Request $request, User $user): Response
     {
         if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true)) {
-                $this->addFlash(
-                    'warning',
-                    $this->translator->trans('message.record_not_found')
-                );
+            $this->addFlash(
+                'warning',
+                $this->translator->trans('message.record_not_found')
+            );
 
-                return $this->redirectToRoute('recipe_index');
+            return $this->redirectToRoute('recipe_index');
         }
         if ($user->getId() == $this->getUser()->getId()) {
             $this->addFlash(

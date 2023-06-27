@@ -1,20 +1,20 @@
 <?php
 /**
- * Comment entity.
+ * Rating entity.
  */
 
 namespace App\Entity;
 
-use App\Repository\CommentRepository;
+use App\Repository\RatingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class Comment.
+ * Class Rating.
  */
-#[ORM\Entity(repositoryClass: CommentRepository::class)]
-#[ORM\Table(name: 'comments')]
-class Comment
+#[ORM\Entity(repositoryClass: RatingRepository::class)]
+#[ORM\Table(name: 'ratings')]
+class Rating
 {
     /**
      * Primary key.
@@ -25,18 +25,17 @@ class Comment
     private ?int $id = null;
 
     /**
-     * Content.
+     * Value.
      */
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Type('string')]
+    #[ORM\Column(type: 'integer')]
+    #[Assert\Type('integer')]
     #[Assert\NotBlank]
-    #[Assert\Length(min: 3, max: 255)]
-    private ?string $content;
+    private ?int $value;
 
     /**
      * Recipe.
      */
-    #[ORM\ManyToOne(targetEntity: Recipe::class, inversedBy: 'comments')]
+    #[ORM\ManyToOne(targetEntity: Recipe::class, inversedBy: 'ratings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Recipe $recipe = null;
 
@@ -44,7 +43,7 @@ class Comment
      * Author.
      */
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Assert\NotBlank]
     #[Assert\Type(User::class)]
     private ?User $author;
@@ -60,25 +59,25 @@ class Comment
     }
 
     /**
-     * Getter for content.
+     * Getter for value.
      *
-     * @return string|null content
+     * @return int|null value
      */
-    public function getContent(): ?string
+    public function getValue(): ?int
     {
-        return $this->content;
+        return $this->value;
     }
 
     /**
-     * Setter for Content.
+     * Setter for Value.
      *
-     * @param string|null $content Content
+     * @param int|null $value Value
      *
      * @return $this
      */
-    public function setContent(?string $content): self
+    public function setValue(?int $value): self
     {
-        $this->content = $content;
+        $this->value = $value;
 
         return $this;
     }

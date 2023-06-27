@@ -52,9 +52,6 @@ class Recipe
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $title = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $comment = null;
-
     /**
      * Category.
      *
@@ -109,11 +106,25 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Comment::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     private $comments;
 
+    /**
+     * Ratings.
+     *
+     * @var Rating|null
+     */
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Rating::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    private $ratings;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $averageRating;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->ingredients = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     /**
@@ -204,18 +215,6 @@ class Recipe
     public function setTitle(?string $title): void
     {
         $this->title = $title;
-    }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment): self
-    {
-        $this->comment = $comment;
-
-        return $this;
     }
 
     public function getCategory(): ?Category
@@ -369,5 +368,74 @@ class Recipe
         }
 
         return $this;
+    }
+
+    /**
+     * Getter for ratings.
+     *
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    /**
+     * Add rating.
+     *
+     * @param Rating $rating Rating
+     *
+     * @return $this
+     */
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove rating.
+     *
+     * @param Rating $rating Rating
+     *
+     * @return $this
+     */
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            if ($rating->getRecipe() === $this) {
+                $rating->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the average rating for the recipe.
+     *
+     * @return float|null Average rating
+     */
+    public function getAverageRating(): ?float
+    {
+        $ratings = $this->getRatings();
+
+        if ($ratings->isEmpty()) {
+            return null;
+        }
+
+        $total = 0;
+        $count = 0;
+
+        foreach ($ratings as $rating) {
+            $total += $rating->getValue();
+            $count++;
+        }
+
+        return $total / $count;
     }
 }
