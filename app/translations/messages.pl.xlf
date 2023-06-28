@@ -74,6 +74,14 @@
                 <source>label.none</source>
                 <target>brak</target>
             </trans-unit>
+            <trans-unit id="label.average_rating">
+                <source>label.average_rating</source>
+                <target>Średnia ocena</target>
+            </trans-unit>
+            <trans-unit id="label.no_ratings">
+                <source>label.no_ratings</source>
+                <target>Brak ocen</target>
+            </trans-unit>
 
             <trans-unit id="message.empty_list">
                 <source>message.empty_list</source>
@@ -106,10 +114,6 @@
             <trans-unit id="message.record_not_found">
                 <source>message.record_not_found</source>
                 <target>Nie znaleziono.</target>
-            </trans-unit>
-            <trans-unit id="message.tag_contains_recipes ">
-                <source>message.tag_contains_recipes</source>
-                <target>Tag zawiera przepisy.</target>
             </trans-unit>
 
             <trans-unit id="title.recipe_list">
@@ -204,6 +208,14 @@
                 <source>title.register</source>
                 <target>Zarejestruj się</target>
             </trans-unit>
+            <trans-unit id="title.tag_create">
+                <source>title.tag_create</source>
+                <target>Dodaj tag</target>
+            </trans-unit>
+            <trans-unit id="title.rating_create">
+                <source>title.rating_create</source>
+                <target>Dodaj ocenę</target>
+            </trans-unit>
 
             <trans-unit id="action.show">
                 <source>action.show</source>
@@ -272,6 +284,10 @@
             <trans-unit id="action.show_recipe">
                 <source>action.show_recipe</source>
                 <target>Pokaż przepis</target>
+            </trans-unit>
+            <trans-unit id="action.rate">
+                <source>action.rate</source>
+                <target>Oceń przepis</target>
             </trans-unit>
         </body>
     </file>

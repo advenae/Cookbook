@@ -1,4 +1,7 @@
 <?php
+/**
+ * Tag entity.
+ */
 
 namespace App\Entity;
 
@@ -8,6 +11,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Tag entity.
+ */
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(name: 'tags')]
 #[UniqueEntity(fields: ['title'])]
@@ -125,11 +131,21 @@ class Tag
         $this->title = $title;
     }
 
+    /**
+     * Getter for slug.
+     *
+     * @return string|null Slug
+     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
+    /**
+     * Setter for slug.
+     *
+     * @param string $slug Slug
+     */
     public function setSlug(string $slug): void
     {
         $this->slug = $slug;

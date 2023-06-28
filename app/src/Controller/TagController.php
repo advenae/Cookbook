@@ -65,7 +65,7 @@ class TagController extends AbstractController
     /**
      * Show action.
      *
-     * @param Tag $tag Tag
+     * @param Tag $tag Tag entity
      *
      * @return Response HTTP response
      */

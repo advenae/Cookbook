@@ -6,12 +6,11 @@
 namespace App\Controller;
 
 use App\Entity\Rating;
+use App\Entity\User;
 use App\Form\Type\RatingType;
 use App\Service\RatingServiceInterface;
 use App\Service\RecipeServiceInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -73,7 +72,7 @@ class RatingController extends AbstractController
         }
 
         $rating = new Rating();
-        /** @var \App\Entity\User $user */
+        /** @var User $user */
         $user = $this->getUser();
         $rating->setAuthor($user);
 
@@ -114,46 +113,6 @@ class RatingController extends AbstractController
             [
                 'form' => $form->createView(),
                 'id' => $recipeId,
-            ]
-        );
-    }
-
-    /**
-     * Delete action.
-     *
-     * @param Request $request HTTP request
-     * @param Rating  $rating  Rating entity
-     *
-     * @return Response HTTP response
-     */
-    #[IsGranted('DELETE', subject: 'rating')]
-    #[Route('/{id}/delete', name: 'rating_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    public function delete(Request $request, Rating $rating): Response
-    {
-        $form = $this->createForm(FormType::class, $rating, [
-            'method' => 'DELETE',
-            'action' => $this->generateUrl('rating_delete', ['id' => $rating->getId()]),
-        ]);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->ratingService->delete($rating);
-
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.deleted_successfully')
-            );
-
-            $recipeId = $rating->getRecipe()->getId();
-
-            return $this->redirectToRoute('recipe_show', ['id' => $recipeId]);
-        }
-
-        return $this->render(
-            'rating/delete.html.twig',
-            [
-                'form' => $form->createView(),
-                'rating' => $rating,
             ]
         );
     }

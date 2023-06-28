@@ -34,7 +34,8 @@ class RecipeType extends AbstractType
     /**
      * Constructor.
      *
-     * @param TagsDataTransformer $tagsDataTransformer Tags data transformer
+     * @param TagsDataTransformer        $tagsDataTransformer       Tags data transformer
+     * @param IngredientsDataTransformer $ingredientDataTransformer Ingredient data transformer
      */
     public function __construct(TagsDataTransformer $tagsDataTransformer, IngredientsDataTransformer $ingredientDataTransformer)
     {
@@ -83,7 +84,7 @@ class RecipeType extends AbstractType
             TextType::class,
             [
                 'label' => 'label.ingredients',
-                'required' => false,
+                'required' => true,
                 'attr' => ['max_length' => 128],
             ]
         );

@@ -19,6 +19,11 @@ class CommentType extends AbstractType
 {
     private $security;
 
+    /**
+     * Constructor.
+     *
+     * @param Security $security Security
+     */
     public function __construct(Security $security)
     {
         $this->security = $security;

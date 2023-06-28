@@ -7,8 +7,8 @@ namespace App\Form\Type;
 
 use App\Entity\Rating;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +17,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RatingType extends AbstractType
 {
+    /**
+     * Tags data transformer.
+     */
     private $security;
 
+    /**
+     * Constructor.
+     *
+     * @param Security $security Security
+     */
     public function __construct(Security $security)
     {
         $this->security = $security;
@@ -42,7 +50,7 @@ class RatingType extends AbstractType
             ChoiceType::class,
             [
                 'placeholder' => 'label.none',
-                'label' => 'label.value',
+                'label' => 'label.rating',
                 'required' => true,
                 'choices' => [
                     '1' => 1,
@@ -50,6 +58,7 @@ class RatingType extends AbstractType
                     '3' => 3,
                     '4' => 4,
                     '5' => 5,
+                    '6' => 6,
                 ],
             ]
         );

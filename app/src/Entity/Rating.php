@@ -30,6 +30,7 @@ class Rating
     #[ORM\Column(type: 'integer')]
     #[Assert\Type('integer')]
     #[Assert\NotBlank]
+    #[Assert\Range(min: 1, max: 5)]
     private ?int $value;
 
     /**
@@ -106,11 +107,23 @@ class Rating
         return $this;
     }
 
+    /**
+     * Getter for author.
+     *
+     * @return User|null Author
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * Setter for author.
+     *
+     * @param User|null $author Author
+     *
+     * @return $this
+     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;

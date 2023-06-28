@@ -70,7 +70,7 @@ class Comment
     }
 
     /**
-     * Setter for Content.
+     * Setter for content.
      *
      * @param string|null $content Content
      *
@@ -107,11 +107,23 @@ class Comment
         return $this;
     }
 
+    /**
+     * Getter for author.
+     *
+     * @return User|null Author
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * Setter for author.
+     *
+     * @param User|null $author Author
+     *
+     * @return $this
+     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;

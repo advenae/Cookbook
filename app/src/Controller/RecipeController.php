@@ -51,10 +51,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(
-        name: 'recipe_index',
-        methods: 'GET'
-    )]
+    #[Route(name: 'recipe_index', methods: 'GET')]
     public function index(Request $request): Response
     {
         $filters = $this->getFilters($request);
@@ -73,7 +70,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET', )]
+    #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     public function show(Recipe $recipe): Response
     {
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
@@ -86,7 +83,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/create', name: 'recipe_create', methods: 'GET|POST', )]
+    #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
     #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request): Response
     {
