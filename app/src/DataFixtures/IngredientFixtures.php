@@ -22,7 +22,7 @@ class IngredientFixtures extends AbstractBaseFixtures
      */
     public function loadData(): void
     {
-        $this->createMany(10, 'ingredients', function (int $i) {
+        $this->createMany(10, 'ingredients', function () {
             $ingredient = new Ingredient();
             $ingredient->setTitle($this->faker->unique()->word);
             $ingredient->setCreatedAt(

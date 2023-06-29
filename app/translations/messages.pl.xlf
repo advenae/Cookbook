@@ -82,6 +82,10 @@
                 <source>label.no_ratings</source>
                 <target>Brak ocen</target>
             </trans-unit>
+            <trans-unit id="label.rating">
+                <source>label.rating</source>
+                <target>Ocena</target>
+            </trans-unit>
 
             <trans-unit id="message.empty_list">
                 <source>message.empty_list</source>
