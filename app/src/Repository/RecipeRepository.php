@@ -113,6 +113,30 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
     /**
+     * Retrieves a recipe with its associated entities.
+     *
+     * @param int $id Id
+     *
+     * @return Recipe|null Recipe
+     *
+     * @throws NonUniqueResultException
+     */
+    public function getRecipeWithAssociations(int $id): ?Recipe
+    {
+        $qb = $this->createQueryBuilder('recipe')
+            ->select('recipe', 'category', 'ingredients', 'tags', 'comments', 'author')
+            ->leftJoin('recipe.category', 'category')
+            ->leftJoin('recipe.ingredients', 'ingredients')
+            ->leftJoin('recipe.tags', 'tags')
+            ->leftJoin('recipe.comments', 'comments')
+            ->leftJoin('comments.author', 'author')
+            ->andWhere('recipe.id = :id')
+            ->setParameter('id', $id);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * Get or create new query builder.
      *
      * @param QueryBuilder|null $queryBuilder Query builder

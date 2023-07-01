@@ -42,4 +42,13 @@ interface RecipeServiceInterface
      * @param int $id Recipe id
      */
     public function getById(int $id): ?Recipe;
+
+    /**
+     * Retrieves a recipe with its associated entities.
+     *
+     * @param int $id Id
+     *
+     * @return Recipe|null Recipe
+     */
+    public function getRecipeWithAssociations(int $id): ?Recipe;
 }
