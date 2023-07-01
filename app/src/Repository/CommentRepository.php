@@ -82,9 +82,7 @@ class CommentRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->queryAll();
 
-        $queryBuilder->leftJoin('comment.author', 'author')
-            ->select('comment.id', 'comment.content', 'author.id AS author_id', 'author.email')
-            ->andWhere('comment.author = :author')
+        $queryBuilder->andWhere('comment.author = :author')
             ->setParameter('author', $user);
 
         return $queryBuilder;
