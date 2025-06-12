@@ -19,10 +19,6 @@ use Doctrine\ORM\NoResultException;
  */
 class CategoryService implements CategoryServiceInterface
 {
-    private CategoryRepository $categoryRepository;
-    private RecipeRepository $recipeRepository;
-    private PaginatorInterface $paginator;
-
     /**
      * CategoryService constructor.
      *
@@ -30,11 +26,8 @@ class CategoryService implements CategoryServiceInterface
      * @param PaginatorInterface $paginator          Paginator
      * @param RecipeRepository   $recipeRepository   Recipe repository
      */
-    public function __construct(CategoryRepository $categoryRepository, PaginatorInterface $paginator, RecipeRepository $recipeRepository)
+    public function __construct(private readonly CategoryRepository $categoryRepository, private readonly PaginatorInterface $paginator, private readonly RecipeRepository $recipeRepository)
     {
-        $this->categoryRepository = $categoryRepository;
-        $this->paginator = $paginator;
-        $this->recipeRepository = $recipeRepository;
     }
 
     /**
@@ -85,7 +78,7 @@ class CategoryService implements CategoryServiceInterface
         try {
             $result = $this->recipeRepository->countByCategory($category);
 
-            return !($result > 0);
+            return $result <= 0;
         } catch (NoResultException|NonUniqueResultException) {
             return false;
         }

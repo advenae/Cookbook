@@ -19,10 +19,6 @@ use Doctrine\ORM\NoResultException;
  */
 class IngredientService implements IngredientServiceInterface
 {
-    private IngredientRepository $ingredientRepository;
-    private RecipeRepository $recipeRepository;
-    private PaginatorInterface $paginator;
-
     /**
      * Constructor.
      *
@@ -30,11 +26,8 @@ class IngredientService implements IngredientServiceInterface
      * @param PaginatorInterface   $paginator            Paginator
      * @param RecipeRepository     $recipeRepository     Recipe repository
      */
-    public function __construct(IngredientRepository $ingredientRepository, PaginatorInterface $paginator, RecipeRepository $recipeRepository)
+    public function __construct(private readonly IngredientRepository $ingredientRepository, private readonly PaginatorInterface $paginator, private readonly RecipeRepository $recipeRepository)
     {
-        $this->ingredientRepository = $ingredientRepository;
-        $this->paginator = $paginator;
-        $this->recipeRepository = $recipeRepository;
     }
 
     /**
@@ -85,7 +78,7 @@ class IngredientService implements IngredientServiceInterface
         try {
             $result = $this->recipeRepository->countByIngredient($ingredient);
 
-            return !($result > 0);
+            return $result <= 0;
         } catch (NoResultException|NonUniqueResultException) {
             return false;
         }

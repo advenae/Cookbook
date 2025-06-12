@@ -25,27 +25,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class RecipeController extends AbstractController
 {
     /**
-     * Recipe service.
-     */
-    private RecipeServiceInterface $recipeService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
-    /**
      * Constructor.
      *
      * @param RecipeServiceInterface $recipeService Recipe service
      * @param TranslatorInterface    $translator    Translator
      */
-    public function __construct(RecipeServiceInterface $recipeService, TranslatorInterface $translator)
+    public function __construct(private readonly RecipeServiceInterface $recipeService, private readonly TranslatorInterface $translator)
     {
-        $this->recipeService = $recipeService;
-        $this->translator = $translator;
     }
-
     /**
      * Index action.
      *
@@ -64,7 +51,6 @@ class RecipeController extends AbstractController
 
         return $this->render('recipe/index.html.twig', ['pagination' => $pagination]);
     }
-
     /**
      * Show action.
      *
@@ -86,7 +72,6 @@ class RecipeController extends AbstractController
 
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
     }
-
     /**
      * Create action.
      *
@@ -119,7 +104,6 @@ class RecipeController extends AbstractController
 
         return $this->render('recipe/create.html.twig', ['form' => $form->createView()]);
     }
-
     /**
      * Edit action.
      *
@@ -161,7 +145,6 @@ class RecipeController extends AbstractController
             ]
         );
     }
-
     /**
      * Delete action.
      *
@@ -203,7 +186,6 @@ class RecipeController extends AbstractController
             ]
         );
     }
-
     /**
      * Get filters from request.
      *
@@ -215,10 +197,6 @@ class RecipeController extends AbstractController
      */
     private function getFilters(Request $request): array
     {
-        $filters = [];
-        $filters['category_id'] = $request->query->getInt('filters_category_id');
-        $filters['tag_id'] = $request->query->getInt('filters_tag_id');
-
-        return $filters;
+        return ['category_id' => $request->query->getInt('filters_category_id'), 'tag_id' => $request->query->getInt('filters_tag_id')];
     }
 }

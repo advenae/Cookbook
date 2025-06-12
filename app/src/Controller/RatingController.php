@@ -19,24 +19,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class RatingController.
  */
-#[Route('/rating')]
 class RatingController extends AbstractController
 {
-    /**
-     * Rating service.
-     */
-    private RatingServiceInterface $ratingService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
-    /**
-     * Recipe service.
-     */
-    private RecipeServiceInterface $recipeService;
-
     /**
      * Constructor.
      *
@@ -44,13 +28,9 @@ class RatingController extends AbstractController
      * @param TranslatorInterface    $translator    Translator
      * @param RecipeServiceInterface $recipeService Recipe service
      */
-    public function __construct(RatingServiceInterface $ratingService, TranslatorInterface $translator, RecipeServiceInterface $recipeService)
+    public function __construct(private readonly RatingServiceInterface $ratingService, private readonly TranslatorInterface $translator, private readonly RecipeServiceInterface $recipeService)
     {
-        $this->ratingService = $ratingService;
-        $this->translator = $translator;
-        $this->recipeService = $recipeService;
     }
-
     /**
      * Create action.
      *
@@ -62,7 +42,7 @@ class RatingController extends AbstractController
     public function create(Request $request): Response
     {
         $recipe = $this->recipeService->getById($request->get('id'));
-        if (null === $recipe) {
+        if (!$recipe instanceof \App\Entity\Recipe) {
             $this->addFlash(
                 'warning',
                 $this->translator->trans('message.recipe_not_found')
@@ -82,7 +62,7 @@ class RatingController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $recipe = $this->recipeService->getById($request->get('id'));
-            if (null === $recipe) {
+            if (!$recipe instanceof \App\Entity\Recipe) {
                 $this->addFlash(
                     'warning',
                     $this->translator->trans('message.recipe_not_found')

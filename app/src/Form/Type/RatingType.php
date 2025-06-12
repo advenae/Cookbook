@@ -18,18 +18,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class RatingType extends AbstractType
 {
     /**
-     * Tags data transformer.
-     */
-    private $security;
-
-    /**
      * Constructor.
      *
      * @param Security $security Security
      */
-    public function __construct(Security $security)
+    public function __construct(private readonly Security $security)
     {
-        $this->security = $security;
     }
 
     /**

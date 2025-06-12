@@ -26,26 +26,6 @@ use App\Repository\CommentRepository;
 class UserController extends AbstractController
 {
     /**
-     * Password hasher.
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
-    /**
-     * User service.
-     */
-    private UserServiceInterface $userService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
-    /**
-     * Comment repository.
-     */
-    private CommentRepository $commentRepository;
-
-    /**
      * Constructor.
      *
      * @param UserServiceInterface        $userService       User service
@@ -53,14 +33,9 @@ class UserController extends AbstractController
      * @param UserPasswordHasherInterface $passwordHasher    Password hasher
      * @param CommentRepository           $commentRepository Comment repository
      */
-    public function __construct(UserServiceInterface $userService, TranslatorInterface $translator, UserPasswordHasherInterface $passwordHasher, CommentRepository $commentRepository)
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator, private readonly UserPasswordHasherInterface $passwordHasher, private readonly CommentRepository $commentRepository)
     {
-        $this->userService = $userService;
-        $this->translator = $translator;
-        $this->passwordHasher = $passwordHasher;
-        $this->commentRepository = $commentRepository;
     }
-
     /**
      * Index action.
      *
@@ -76,7 +51,6 @@ class UserController extends AbstractController
 
         return $this->render('user/index.html.twig', ['pagination' => $pagination]);
     }
-
     /**
      * Edit action.
      *
@@ -93,15 +67,12 @@ class UserController extends AbstractController
     )]
     public function edit(Request $request, User $user): Response
     {
-        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true)) {
-            if ($user !== $this->getUser()) {
-                $this->addFlash(
-                    'warning',
-                    $this->translator->trans('message.record_not_found')
-                );
-
-                return $this->redirectToRoute('recipe_index');
-            }
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true) && $user !== $this->getUser()) {
+            $this->addFlash(
+                'warning',
+                $this->translator->trans('message.record_not_found')
+            );
+            return $this->redirectToRoute('recipe_index');
         }
 
         $form = $this->createForm(
@@ -144,7 +115,6 @@ class UserController extends AbstractController
             ]
         );
     }
-
     /**
      * Delete action.
      *
@@ -218,7 +188,6 @@ class UserController extends AbstractController
             ]
         );
     }
-
     /**
      * EditEmail action.
      *
@@ -235,15 +204,12 @@ class UserController extends AbstractController
     )]
     public function editEmail(Request $request, User $user): Response
     {
-        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true)) {
-            if ($user !== $this->getUser()) {
-                $this->addFlash(
-                    'warning',
-                    $this->translator->trans('message.record_not_found')
-                );
-
-                return $this->redirectToRoute('recipe_index');
-            }
+        if (!in_array('ROLE_ADMIN', $this->getUser()->getRoles(), true) && $user !== $this->getUser()) {
+            $this->addFlash(
+                'warning',
+                $this->translator->trans('message.record_not_found')
+            );
+            return $this->redirectToRoute('recipe_index');
         }
 
         $form = $this->createForm(

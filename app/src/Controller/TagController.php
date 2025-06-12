@@ -19,30 +19,17 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Class TagController.
  */
-#[Route('/tag')]
 #[IsGranted('ROLE_ADMIN')]
 class TagController extends AbstractController
 {
-    /**
-     * Tag service.
-     */
-    private TagServiceInterface $tagService;
-
-    /**
-     * Translator.
-     */
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
      * @param TagServiceInterface $tagService Tag service
      * @param TranslatorInterface $translator Translator
      */
-    public function __construct(TagServiceInterface $tagService, TranslatorInterface $translator)
+    public function __construct(private readonly TagServiceInterface $tagService, private readonly TranslatorInterface $translator)
     {
-        $this->tagService = $tagService;
-        $this->translator = $translator;
     }
 
     /**

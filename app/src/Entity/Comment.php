@@ -31,7 +31,7 @@ class Comment
     #[Assert\Type('string')]
     #[Assert\NotBlank]
     #[Assert\Length(min: 3, max: 255)]
-    private ?string $content;
+    private ?string $content = null;
 
     /**
      * Recipe.
@@ -48,7 +48,7 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Type(User::class)]
-    private ?User $author;
+    private ?User $author = null;
 
     /**
      * Getter for id.

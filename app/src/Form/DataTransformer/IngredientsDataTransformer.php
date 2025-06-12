@@ -18,18 +18,12 @@ use Symfony\Component\Form\DataTransformerInterface;
 class IngredientsDataTransformer implements DataTransformerInterface
 {
     /**
-     * Ingredient service.
-     */
-    private IngredientServiceInterface $ingredientService;
-
-    /**
      * Constructor.
      *
      * @param IngredientServiceInterface $ingredientService Ingredient service
      */
-    public function __construct(IngredientServiceInterface $ingredientService)
+    public function __construct(private readonly IngredientServiceInterface $ingredientService)
     {
-        $this->ingredientService = $ingredientService;
     }
 
     /**
@@ -70,7 +64,7 @@ class IngredientsDataTransformer implements DataTransformerInterface
         foreach ($ingredientTitles as $ingredientTitle) {
             if ('' !== trim($ingredientTitle)) {
                 $ingredient = $this->ingredientService->findOneByTitle(strtolower($ingredientTitle));
-                if (null === $ingredient) {
+                if (!$ingredient instanceof \App\Entity\Ingredient) {
                     $ingredient = new Ingredient();
                     $ingredient->setTitle($ingredientTitle);
 
