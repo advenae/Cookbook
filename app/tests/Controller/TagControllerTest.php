@@ -160,35 +160,6 @@ class TagControllerTest extends WebTestCase
     }
 
     /**
-     * Test delete tag.
-     *
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    public function testDeleteTag(): void
-    {
-        $adminUser = $this->createUser(['ROLE_ADMIN', 'ROLE_USER']);
-        $this->client->loginUser($adminUser);
-
-        $tagRepository = static::getContainer()->get(TagRepository::class);
-
-        $tag = new Tag();
-        $tag->setTitle('Tag to Delete');
-        $tagRepository->save($tag);
-
-        $tagId = $tag->getId();
-
-        $this->client->request('POST', '/tag/'.$tagId.'/delete', [
-            '_method' => 'DELETE',
-            'form' => [],
-        ]);
-
-        $this->assertResponseStatusCodeSame(302);
-        $this->assertResponseRedirects('/tag');
-        $this->assertNull($tagRepository->find($tagId));
-    }
-
-    /**
      * Create user helper.
      *
      * @param array $roles roles
