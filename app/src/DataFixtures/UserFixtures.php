@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User fixtures.
  */
@@ -7,15 +8,19 @@ namespace App\DataFixtures;
 
 use App\Entity\Enum\UserRole;
 use App\Entity\User;
+use Doctrine\Persistence\ObjectManager;
+use Faker\Generator;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Class UserFixtures.
+ *
+ * @psalm-suppress MissingConstructor
  */
 class UserFixtures extends AbstractBaseFixtures
 {
     /**
-     * UserFixtures constructor.
+     * Constructor.
      *
      * @param UserPasswordHasherInterface $passwordHasher Password hasher
      */
@@ -25,10 +30,14 @@ class UserFixtures extends AbstractBaseFixtures
 
     /**
      * Load data.
+     *
+     * @psalm-suppress PossiblyNullPropertyFetch
+     * @psalm-suppress PossiblyNullReference
+     * @psalm-suppress UnusedClosureParam
      */
     protected function loadData(): void
     {
-        if (!$this->manager instanceof \Doctrine\Persistence\ObjectManager || !$this->faker instanceof \Faker\Generator) {
+        if (!$this->manager instanceof ObjectManager || !$this->faker instanceof Generator) {
             return;
         }
 
@@ -46,7 +55,7 @@ class UserFixtures extends AbstractBaseFixtures
             return $user;
         });
 
-        $this->createMany(3, 'admins', function (int $i) {
+        $this->createMany(3, 'admins', factory: function (int $i = 10) {
             $user = new User();
             $user->setEmail(sprintf('admin%d@example.com', $i));
             $user->setRoles([UserRole::ROLE_USER->value, UserRole::ROLE_ADMIN->value]);
@@ -59,7 +68,5 @@ class UserFixtures extends AbstractBaseFixtures
 
             return $user;
         });
-
-        $this->manager->flush();
     }
 }

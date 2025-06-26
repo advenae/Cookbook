@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Tag controller.
  */
@@ -13,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -39,7 +40,7 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'tag_index', methods: 'GET')]
+    #[Route('/tag', name: 'tag_index', methods: 'GET')]
     public function index(Request $request): Response
     {
         $pagination = $this->tagService->getPaginatedList(
@@ -57,7 +58,7 @@ class TagController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}',
+        '/tag/{id}',
         name: 'tag_show',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
@@ -75,7 +76,7 @@ class TagController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/create',
+        '/tag/create',
         name: 'tag_create',
         methods: 'GET|POST',
     )]
@@ -110,7 +111,7 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'tag_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[Route('/tag/{id}/edit', name: 'tag_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     public function edit(Request $request, Tag $tag): Response
     {
         $form = $this->createForm(
@@ -151,7 +152,7 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[Route('/tag/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     public function delete(Request $request, Tag $tag): Response
     {
         $form = $this->createForm(FormType::class, $tag, [

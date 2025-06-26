@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Recipe controller.
  */
@@ -10,18 +11,17 @@ use App\Form\Type\RecipeType;
 use App\Service\RatingServiceInterface;
 use App\Service\RecipeServiceInterface;
 use Doctrine\ORM\NonUniqueResultException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class RecipeController.
  */
-#[Route('/recipe')]
 class RecipeController extends AbstractController
 {
     /**
@@ -33,15 +33,17 @@ class RecipeController extends AbstractController
     public function __construct(private readonly RecipeServiceInterface $recipeService, private readonly TranslatorInterface $translator)
     {
     }
+
     /**
      * Index action.
      *
-     * @param Request $request HTTP Request
+     * @param Request                $request       HTTP Request
+     * @param RatingServiceInterface $ratingService Rating service
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'recipe_index', methods: 'GET')]
-    public function index(Request $request): Response
+    #[Route('/recipe', name: 'recipe_index', methods: ['GET'])]
+    public function index(Request $request, RatingServiceInterface $ratingService): Response
     {
         $filters = $this->getFilters($request);
         $pagination = $this->recipeService->getPaginatedList(
@@ -49,19 +51,25 @@ class RecipeController extends AbstractController
             $filters
         );
 
+        foreach ($pagination as $recipe) {
+            $averageRating = $ratingService->calculateAvg($recipe);
+            $recipe->setAverageRating($averageRating);
+        }
+
         return $this->render('recipe/index.html.twig', ['pagination' => $pagination]);
     }
+
     /**
      * Show action.
      *
-     * @param int                    $id            Id
+     * @param int                    $id            Recipe ID
      * @param RatingServiceInterface $ratingService Rating service
      *
      * @return Response HTTP response
      *
      * @throws NonUniqueResultException
      */
-    #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
+    #[Route('/recipe/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     public function show(int $id, RatingServiceInterface $ratingService): Response
     {
         $recipe = $this->recipeService->getRecipeWithAssociations($id);
@@ -72,6 +80,7 @@ class RecipeController extends AbstractController
 
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
     }
+
     /**
      * Create action.
      *
@@ -79,7 +88,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
+    #[Route('/recipe/create', name: 'recipe_create', methods: 'GET|POST')]
     #[IsGranted('ROLE_ADMIN')]
     public function create(Request $request): Response
     {
@@ -104,6 +113,7 @@ class RecipeController extends AbstractController
 
         return $this->render('recipe/create.html.twig', ['form' => $form->createView()]);
     }
+
     /**
      * Edit action.
      *
@@ -112,7 +122,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[Route('/recipe/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Recipe $recipe): Response
     {
@@ -145,6 +155,7 @@ class RecipeController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
@@ -153,7 +164,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[Route('/recipe/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Recipe $recipe): Response
     {
@@ -186,6 +197,7 @@ class RecipeController extends AbstractController
             ]
         );
     }
+
     /**
      * Get filters from request.
      *

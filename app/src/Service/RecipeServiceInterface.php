@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Recipe service interface.
  */
@@ -44,7 +45,7 @@ interface RecipeServiceInterface
     public function getById(int $id): ?Recipe;
 
     /**
-     * Retrieves a recipe with its associated entities.
+     * Get recipe with its associated entities.
      *
      * @param int $id Id
      *

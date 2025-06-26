@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Recipe repository.
  */
@@ -70,6 +71,30 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
     /**
+     * Get recipe with its associated entities.
+     *
+     * @param int $id Id
+     *
+     * @return Recipe|null Recipe
+     *
+     * @throws NonUniqueResultException
+     */
+    public function getRecipeWithAssociations(int $id): ?Recipe
+    {
+        $queryBuilder = $this->createQueryBuilder('recipe')
+            ->select('recipe', 'category', 'ingredients', 'tags', 'comments', 'author')
+            ->leftJoin('recipe.category', 'category')
+            ->leftJoin('recipe.ingredients', 'ingredients')
+            ->leftJoin('recipe.tags', 'tags')
+            ->leftJoin('recipe.comments', 'comments')
+            ->leftJoin('comments.author', 'author')
+            ->andWhere('recipe.id = :id')
+            ->setParameter('id', $id);
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
      * Count recipes by category.
      *
      * @param Category $category Category
@@ -113,37 +138,13 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retrieves a recipe with its associated entities.
-     *
-     * @param int $id Id
-     *
-     * @return Recipe|null Recipe
-     *
-     * @throws NonUniqueResultException
-     */
-    public function getRecipeWithAssociations(int $id): ?Recipe
-    {
-        $qb = $this->createQueryBuilder('recipe')
-            ->select('recipe', 'category', 'ingredients', 'tags', 'comments', 'author')
-            ->leftJoin('recipe.category', 'category')
-            ->leftJoin('recipe.ingredients', 'ingredients')
-            ->leftJoin('recipe.tags', 'tags')
-            ->leftJoin('recipe.comments', 'comments')
-            ->leftJoin('comments.author', 'author')
-            ->andWhere('recipe.id = :id')
-            ->setParameter('id', $id);
-
-        return $qb->getQuery()->getOneOrNullResult();
-    }
-
-    /**
      * Get or create new query builder.
      *
      * @param QueryBuilder|null $queryBuilder Query builder
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('recipe');
     }

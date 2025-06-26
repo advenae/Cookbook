@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Ingredient service interface.
  */
@@ -35,15 +36,6 @@ interface IngredientServiceInterface
      * @param Ingredient $ingredient Ingredient entity
      */
     public function delete(Ingredient $ingredient): void;
-
-    /**
-     * Can Ingredient be deleted?
-     *
-     * @param Ingredient $ingredient Ingredient entity
-     *
-     * @return bool Result
-     */
-    public function canBeDeleted(Ingredient $ingredient): bool;
 
     /**
      * Find by title.

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Rating controller.
  */
@@ -13,7 +14,6 @@ use App\Service\RecipeServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -31,6 +31,7 @@ class RatingController extends AbstractController
     public function __construct(private readonly RatingServiceInterface $ratingService, private readonly TranslatorInterface $translator, private readonly RecipeServiceInterface $recipeService)
     {
     }
+
     /**
      * Create action.
      *
@@ -38,7 +39,7 @@ class RatingController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/create', name: 'rating_create', requirements: ['id' => '[1-9]\d*'], methods: 'GET|POST')]
+    #[\Symfony\Component\Routing\Attribute\Route('/rating/create', name: 'rating_create', requirements: ['id' => '[1-9]\d*'], methods: 'GET|POST')]
     public function create(Request $request): Response
     {
         $recipe = $this->recipeService->getById($request->get('id'));

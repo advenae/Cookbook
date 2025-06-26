@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Comment fixtures.
  */
@@ -9,6 +10,8 @@ use App\Entity\Comment;
 use App\Entity\Recipe;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\Persistence\ObjectManager;
+use Faker\Generator;
 
 /**
  * Class CommentFixtures.
@@ -19,14 +22,10 @@ class CommentFixtures extends AbstractBaseFixtures implements DependentFixtureIn
 {
     /**
      * Load data.
-     *
-     * @psalm-suppress PossiblyNullPropertyFetch
-     * @psalm-suppress PossiblyNullReference
-     * @psalm-suppress UnusedClosureParam
      */
     public function loadData(): void
     {
-        if (!$this->manager instanceof \Doctrine\Persistence\ObjectManager || !$this->faker instanceof \Faker\Generator) {
+        if (!$this->manager instanceof ObjectManager || !$this->faker instanceof Generator) {
             return;
         }
 
@@ -35,11 +34,11 @@ class CommentFixtures extends AbstractBaseFixtures implements DependentFixtureIn
             $comment->setContent($this->faker->text);
 
             /** @var Recipe $recipe */
-            $recipe = $this->getRandomReference('recipes');
+            $recipe = $this->getRandomReference('recipes', Recipe::class);
             $comment->setRecipe($recipe);
 
             /** @var User $author */
-            $author = $this->getRandomReference('users');
+            $author = $this->getRandomReference('users', User::class);
             $comment->setAuthor($author);
 
             return $comment;
@@ -52,12 +51,13 @@ class CommentFixtures extends AbstractBaseFixtures implements DependentFixtureIn
      * This method must return an array of fixtures classes
      * on which the implementing class depends on.
      *
-     * @return string[] of dependencies
-     *
-     * @psalm-return array{0: CategoryFixtures::class}
+     * @return array<class-string>
      */
     public function getDependencies(): array
     {
-        return [RecipeFixtures::class];
+        return [
+            RecipeFixtures::class,
+            UserFixtures::class,
+        ];
     }
 }

@@ -83,7 +83,7 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * Retrieves a recipe with its associated entities.
+     * Get recipe with its associated entities.
      *
      * @param int $id Id
      *

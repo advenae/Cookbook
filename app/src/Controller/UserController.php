@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User controller.
  */
@@ -14,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Repository\CommentRepository;
@@ -22,7 +23,6 @@ use App\Repository\CommentRepository;
 /**
  * Class UserController.
  */
-#[Route('/user')]
 class UserController extends AbstractController
 {
     /**
@@ -36,6 +36,7 @@ class UserController extends AbstractController
     public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator, private readonly UserPasswordHasherInterface $passwordHasher, private readonly CommentRepository $commentRepository)
     {
     }
+
     /**
      * Index action.
      *
@@ -44,13 +45,14 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[IsGranted('ROLE_ADMIN')]
-    #[Route('/all', name: 'user_index', methods: 'GET')]
+    #[Route('/user/all', name: 'user_index', methods: 'GET')]
     public function index(Request $request): Response
     {
         $pagination = $this->userService->getPaginatedList($request->query->getInt('page', 1));
 
         return $this->render('user/index.html.twig', ['pagination' => $pagination]);
     }
+
     /**
      * Edit action.
      *
@@ -60,7 +62,7 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}/edit_password',
+        '/user/{id}/edit_password',
         name: 'user_edit_password',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET|PUT'
@@ -72,6 +74,7 @@ class UserController extends AbstractController
                 'warning',
                 $this->translator->trans('message.record_not_found')
             );
+
             return $this->redirectToRoute('recipe_index');
         }
 
@@ -115,6 +118,7 @@ class UserController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
@@ -124,7 +128,7 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}/delete',
+        '/user/{id}/delete',
         name: 'user_delete',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET|DELETE'
@@ -188,6 +192,7 @@ class UserController extends AbstractController
             ]
         );
     }
+
     /**
      * EditEmail action.
      *
@@ -197,7 +202,7 @@ class UserController extends AbstractController
      * @return Response HTTP response
      */
     #[Route(
-        '/{id}/edit_email',
+        '/user/{id}/edit_email',
         name: 'user_edit_email',
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET|PUT'
@@ -209,6 +214,7 @@ class UserController extends AbstractController
                 'warning',
                 $this->translator->trans('message.record_not_found')
             );
+
             return $this->redirectToRoute('recipe_index');
         }
 
